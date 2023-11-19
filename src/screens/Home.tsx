@@ -1,25 +1,24 @@
+import { useState } from "react";
 import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Participant } from "../components/Participant";
 import { styles } from "./styles";
 
-const names = [
-  "Marcelo",
-  "Joaquim",
-  "Viviane",
-  "João",
-  "Maria",
-  "José",
-  "Pedro",
-  "Paulo",
-  "Lucas",
-  "Luciana",
-  "Luis",
-  "Luiza"
-];
 
 export function Home() {
 
+  const [name, setName] = useState<string[]>([]);
+  const [participantName, setParticipantName] = useState("");
+
+  const handleParticipantAdd = () => {
+    if (name.includes(participantName)) {
+      return Alert.alert("Participante já adicionado!");
+    }
+    setName(preventState => [...preventState, participantName]);
+    setParticipantName("");
+  };
+
   const handleParticipantRemove = (name: string) => {
+
     Alert.alert("Remover participante", `Deseja remover ${name}?`, [
       {
         text: "Não",
@@ -27,7 +26,12 @@ export function Home() {
       },
       {
         text: "Sim",
-        onPress: () => { Alert.alert("Removido com sucesso!") }
+        onPress: () => {
+          setName(preventState => preventState.filter(
+            participant => participant !== name
+          ));
+          Alert.alert("Removido com sucesso!")
+        }
       }
     ]);
   };
@@ -44,15 +48,17 @@ export function Home() {
           style={styles.textInput}
           placeholder="Nome do participante"
           placeholderTextColor="#6b6b6b"
+          value={participantName}
+          onChangeText={setParticipantName}
         />
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={handleParticipantAdd}>
           <Text style={styles.buttonText}>+</Text>
         </TouchableOpacity>
       </View>
 
       <FlatList
-        data={names}
+        data={name}
         renderItem={
           ({ item }) => <Participant
             name={item}
@@ -60,6 +66,10 @@ export function Home() {
         }
         keyExtractor={item => item}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={() => <Text style={{
+          color: 'white',
+          marginLeft: 20,
+        }}>Nenhum participante adicionado.</Text>}
       />
 
     </View>
