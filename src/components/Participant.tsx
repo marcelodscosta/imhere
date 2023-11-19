@@ -1,6 +1,12 @@
 import { Text, TouchableOpacity, View } from "react-native";
 
-export function Participant() {
+type ParticipantProps = {
+  name: string,
+  onRemove: () => void
+}
+
+
+export function Participant({ name, onRemove }: ParticipantProps) {
   return (
     <View style={
       {
@@ -15,9 +21,18 @@ export function Participant() {
         alignItems: 'center'
       }}>
 
-      <Text style={{ color: 'white', flex: 1, padding: 15 }}>Marcelo Costa</Text>
+      <Text style={{ color: 'white', flex: 1, padding: 15 }}>{name}</Text>
 
-      <TouchableOpacity style={{ height: 56, width: 56, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', borderRadius: 8 }}>
+      <TouchableOpacity
+        onPress={onRemove}
+        style={{
+          height: 56,
+          width: 56,
+          backgroundColor: 'red',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 8
+        }}>
         <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 18 }}>-</Text>
       </TouchableOpacity>
 
