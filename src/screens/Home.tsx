@@ -1,13 +1,35 @@
-import { FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, FlatList, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { Participant } from "../components/Participant";
 import { styles } from "./styles";
 
-const names = ["Marcelo", "Joaquim", "Viviane", "João", "Maria", "José", "Pedro", "Paulo", "Lucas", "Luciana", "Luis", "Luiza"];
+const names = [
+  "Marcelo",
+  "Joaquim",
+  "Viviane",
+  "João",
+  "Maria",
+  "José",
+  "Pedro",
+  "Paulo",
+  "Lucas",
+  "Luciana",
+  "Luis",
+  "Luiza"
+];
 
 export function Home() {
 
   const handleParticipantRemove = (name: string) => {
-    console.log("Removendo participante " + name);
+    Alert.alert("Remover participante", `Deseja remover ${name}?`, [
+      {
+        text: "Não",
+        style: "cancel"
+      },
+      {
+        text: "Sim",
+        onPress: () => { Alert.alert("Removido com sucesso!") }
+      }
+    ]);
   };
 
   return (
@@ -34,7 +56,7 @@ export function Home() {
         renderItem={
           ({ item }) => <Participant
             name={item}
-            onRemove={() => handleParticipantRemove("Marcelo")} />
+            onRemove={() => handleParticipantRemove(item)} />
         }
         keyExtractor={item => item}
         showsVerticalScrollIndicator={false}
